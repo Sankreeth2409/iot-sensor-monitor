@@ -1,0 +1,1 @@
+paho-mqtt>=1.6  # only needed for --mqtt-host / Docker; the demo and tests use the standard library only

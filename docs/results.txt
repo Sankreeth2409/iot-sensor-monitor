@@ -1,0 +1,16 @@
+Processed 3575 messages from 9 sensors in 0.30 s (12066 msg/s, in-memory transport, SQLite storage)
+
+| Injected fault | First alert | Detected after (steps) | Critical limit hit after (steps) |
+|---|---|---|---|
+| drift on pump-01/temperature | trend | 8 | 36 |
+| spike on pump-02/vibration | zscore | 0 | - |
+| stuck on motor-01/voltage | stuck | 13 | - |
+| dropout on pump-02/voltage | stale | 8 | - |
+
+False alarms on fault-free series or before the first fault: 0
+Total alerts: 12
+
+Sweep over 40 random seeds:
+- Fault-free: 82 false alerts in 216000 readings (about 1 per 2634 readings)
+- With faults: 160 of 160 injected faults detected
+- Median detection delay in steps: drift 7, spike 0, stuck 13, dropout 8

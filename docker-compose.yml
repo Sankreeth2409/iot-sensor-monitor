@@ -1,0 +1,25 @@
+# docker compose up --build   ->  dashboard on http://localhost:8000
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+  ingest:
+    build: .
+    command: ["ingest", "--mqtt-host", "mosquitto", "--db", "/data/iot.db"]
+    volumes: ["data:/data"]
+    depends_on: [mosquitto]
+    restart: on-failure
+  simulator:
+    build: .
+    command: ["simulate", "--mqtt-host", "mosquitto", "--interval", "0.5", "--steps", "100000"]
+    depends_on: [mosquitto, ingest]
+    restart: on-failure
+  dashboard:
+    build: .
+    command: ["dashboard", "--db", "/data/iot.db", "--host", "0.0.0.0", "--port", "8000"]
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: ["data:/data"]
+    depends_on: [ingest]
+volumes:
+  data:
